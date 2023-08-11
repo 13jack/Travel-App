@@ -21,6 +21,17 @@ export default function App() {
   const [showPin, setShowPin] = useState(null);
   const [currentUser, SetCurrentUser] = useState("jane");
   const [newPlace, setNewPlace] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [desc, setDesc] = useState(null);
+  const [rating, setRating] = useState(null);
+
+  const [viewport, setViewport] = useState({
+    width: "100vw",
+    height: "100vh",
+    latitude: 27.173891,
+    longitude: 78.042068,
+    zoom: 3,
+  });
   useEffect(() => {
     const getPins = async () => {
       try {
@@ -32,14 +43,6 @@ export default function App() {
     };
     getPins();
   }, []);
-
-  const [viewport, setViewport] = useState({
-    width: "100vw",
-    height: "100vh",
-    latitude: 27.173891,
-    longitude: 78.042068,
-    zoom: 3,
-  });
   const handleMarkerClick = (id, lat, long) => {
     setShowPin(id);
     setViewport({ ...viewport, latitude: lat, longitude: long });
@@ -51,6 +54,25 @@ export default function App() {
     setNewPlace({ long: lng, lat: lat });
     // console.log(e.lngLat, "__long", newPlace.long, " lat-", newPlace.lat);
   };
+  const handleSubmit = async (e) => {
+    console.log("I'm running dude ");
+    e.preventDefault();
+    const newPin = {
+      username: currentUser,
+      title,
+      desc,
+      rating,
+      lat: newPlace.lat,
+      long: newPlace.long,
+    };
+    try {
+      const res = await axios.post("http://localhost:8800/api/pins", newPin);
+      setPins([...pins, res.data]);
+      setNewPlace(null);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className="App">
       <Map
@@ -59,9 +81,8 @@ export default function App() {
         style={{
           width: "100%",
           height: "96vh",
-          TransitionEvent: { duration: 400 },
         }}
-        onDblclick={(e) => console.log(e)}
+        onDblclick={(e) => handleAddClick(e)}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         accessToken={TOKEN}
         // onClick={(e) => handleAddClick(e)}
@@ -135,10 +156,43 @@ export default function App() {
             anchor="bottom"
             closeButton={true}
             closeOnClick={false}
-            // onClose={() => console.log(p._id === showPin)}
+            // onClose={() => setNewPlace(null)}
           >
             {/* {console.log(newPlace.long)} */}
-            ADD USER
+            <div className="form">
+              <form action="">
+                <label> Title</label>
+                <input
+                  type="text"
+                  placeholder="Enter a title"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <label> Review</label>
+                <textarea
+                  placeholder="Say us somthing about this place"
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="5"
+                  onChange={(e) => setDesc(e.target.value)}
+                ></textarea>
+                <label> Rating</label>
+                <select
+                  name=""
+                  id=""
+                  onChange={(e) => setRating(e.target.value)}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <button className="submitButton" onClick={handleSubmit}>
+                  Add Pin
+                </button>
+              </form>
+            </div>
           </Popup>
         )}
       </Map>
