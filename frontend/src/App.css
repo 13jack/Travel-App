@@ -1,0 +1,29 @@
+.card{
+    max-width: 207px;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+label{
+    width: max-content;
+    color: tomato;
+    font-size: 13px;
+    border-bottom: .7px solid tomato;
+    margin: 0px 0;
+
+}
+.desc{
+font-size: 14px;
+}
+.star{
+    color: gold;
+}
+.usrename{
+    font-size: 14px;
+}
+
+.date{
+    font-size: 10px;
+}
