@@ -46,11 +46,39 @@ input::placeholder, textarea::placeholder{
 input:focus{
     border: 1px solid black;
 }
+#selection{
+    margin: 5px 0 !important;
+}
 .submitButton{
-    margin: 15px 0;
+    margin: 7px 0px;
     border: none;
     padding: 5px;
     color: white;
     background-color: tomato    ;
     cursor: pointer;
-}   
+}
+
+.logout{
+    background-color: tomato  !important;
+    color: white !important;
+}
+.login{
+    background-color: teal !important   ;
+    margin: 0 2px !important;
+}
+.register{
+    background-color: slateblue !important ;
+}
+
+
+.buttons, .logout{
+    position: absolute !important;
+    top: 10px;
+    right: 5px; 
+}
+.userNAME{
+    position: absolute;
+    top: 10px;
+    left: -35px;
+    background-color: tomato !important;
+}
